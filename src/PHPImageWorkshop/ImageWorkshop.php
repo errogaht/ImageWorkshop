@@ -5,6 +5,7 @@ namespace PHPImageWorkshop;
 use PHPImageWorkshop\Core\ImageWorkshopLayer as ImageWorkshopLayer;
 use PHPImageWorkshop\Core\ImageWorkshopLib as ImageWorkshopLib;
 use PHPImageWorkshop\Exception\ImageWorkshopException as ImageWorkshopException;
+use PHPImageWorkshop\Gradient\AbstractGradient;
 
 // If no autoloader, uncomment these lines:
 //require_once(__DIR__.'/Core/ImageWorkshopLayer.php');
@@ -132,20 +133,28 @@ class ImageWorkshop
      * 
      * @param integer $width
      * @param integer $height
-     * @param string $backgroundColor
+     * @param string|AbstractGradient $backgroundColor
      * 
      * @return ImageWorkshopLayer
      */
     public static function initVirginLayer($width = 100, $height = 100, $backgroundColor = null)
     {
         $opacity = 0;
-        
-        if (null === $backgroundColor || $backgroundColor == 'transparent') {
-            $opacity = 127;
-            $backgroundColor = 'ffffff';
+
+        if ($backgroundColor instanceof AbstractGradient) {
+
+            $layer = self::initVirginLayer($width, $height);
+            $gradientFilledLayer = $backgroundColor->generate($layer);
+            return $gradientFilledLayer;
+
+        } else {
+
+            if (!$backgroundColor || $backgroundColor == 'transparent') {
+                $opacity = 127;
+                $backgroundColor = 'ffffff';
+            }
+            return new ImageWorkshopLayer(ImageWorkshopLib::generateImage($width, $height, $backgroundColor, $opacity));
         }
-        
-        return new ImageWorkshopLayer(ImageWorkshopLib::generateImage($width, $height, $backgroundColor, $opacity));
     }
     
     /**

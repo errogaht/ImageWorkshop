@@ -152,7 +152,7 @@ class ImageWorkshopLib
     {
         $rgbaString = str_replace(' ', '', $rgbaString);
         list($r, $g, $b, $a) = explode(',', $rgbaString);
-        return array($r, $g, $b, round(127 * $a));
+        return array($r, $g, $b, 127 - round(127 * $a));
     }
     
     /**
