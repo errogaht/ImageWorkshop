@@ -140,6 +140,22 @@ class ImageWorkshopLib
     }
 
     /**
+     * Convert CSS rgba() string to array of rgba values
+     * @param $rgbaString string CSS compatible rgba(100, 100, 100, 0.8)
+     *
+     * @return array
+     *
+     * example:
+     * $result = getRgbaFromCssRgba("100, 100, 100, 0.5"); // [100, 100, 100, 64]
+     */
+    public static function getRgbaFromCssRgba($rgbaString)
+    {
+        $rgbaString = str_replace(' ', '', $rgbaString);
+        list($r, $g, $b, $a) = explode(',', $rgbaString);
+        return array($r, $g, $b, round(127 * $a));
+    }
+    
+    /**
      * Return dimension of a text
      *
      * @param $fontSize
