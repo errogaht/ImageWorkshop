@@ -100,7 +100,7 @@ class ImageWorkshopLib
             'B' => (int) base_convert(substr($hex, 4, 2), 16, 10),
         );
     }
-    
+
     /**
      * Generate a new image resource var
      *
@@ -114,15 +114,32 @@ class ImageWorkshopLib
     public static function generateImage($width = 100, $height = 100, $color = 'ffffff', $opacity = 127)
     {
         $RGBColors = ImageWorkshopLib::convertHexToRGB($color);
+        return self::generateImageFromRGB($width, $height, $RGBColors['R'], $RGBColors['G'], $RGBColors['B'], $opacity);
+    }
 
+    /**
+     * Generate a new image resource var from rgb
+     *
+     * @param integer $width
+     * @param integer $height
+     * @param integer $r
+     * @param integer $g
+     * @param integer $b
+     * @param integer $opacity
+     *
+     * @return resource
+     * @internal param string $color
+     */
+    public static function generateImageFromRGB($width = 100, $height = 100, $r = 255, $g = 255, $b = 255, $opacity = 127)
+    {
         $image = imagecreatetruecolor($width, $height);
         imagesavealpha($image, true);
-        $color = imagecolorallocatealpha($image, $RGBColors['R'], $RGBColors['G'], $RGBColors['B'], $opacity);
+        $color = imagecolorallocatealpha($image, $r, $g, $b, $opacity);
         imagefill($image, 0, 0, $color);
 
         return $image;
     }
-    
+
     /**
      * Return dimension of a text
      *
